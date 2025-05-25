@@ -1,0 +1,22 @@
+function allowDuplicateTabs() {
+    if (typeof console === 'undefined') {
+      window.console = {
+        log: function () {},
+      }
+    }
+    localStorage.removeItem('RecentPageID')
+    localStorage.removeItem('WrongPageID')
+    var originalSetItem = localStorage.setItem
+    localStorage.setItem = function (key, value) {
+      if (key === 'RecentPageID' || key === 'WrongPageID') {
+        return
+      }
+      originalSetItem.apply(this, arguments)
+    }
+    var originalGetItem = localStorage.getItem
+    localStorage.getItem = function (key) {
+      if (key === 'RecentPageID' || key === 'WrongPageID') {
+        return null
+      }
+      return originalGetItem.apply(this, arguments)
+    }
